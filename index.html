@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>מרכז ההדרכות</title>
+<style>
+  :root{
+    --blue:#0b4f8c;
+    --light-blue:#e9f2fb;
+    --accent:#1370c8;
+    --muted:#6b7785;
+    --card-bg:#ffffff;
+  }
+  html,body{height:100%; margin:0; padding:0; font-family: Arial, Helvetica, sans-serif; background:var(--light-blue); direction:rtl; color:#222}
+  header{background:linear-gradient(90deg,var(--blue),#0a3e66); color:#fff; padding:18px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px}
+  header .left{display:flex; align-items:center; gap:12px}
+  header img.logo{height:56px; border-radius:8px; background:#fff; padding:4px}
+  header h1{margin:0; font-size:20px; font-weight:700}
+  .main {padding:22px; max-width:1100px; margin:18px auto;}
+  /* Home hero */
+  .hero{background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7)); border-radius:14px; padding:28px; display:flex; gap:20px; align-items:center; box-shadow: 0 6px 20px rgba(0,0,0,0.06)}
+  .hero .logo-wrap{flex:0 0 150px; display:flex; align-items:center; justify-content:center}
+  .hero .logo-wrap img{height:110px; transform:translateY(-6px); animation:logoPop 800ms ease;}
+  @keyframes logoPop{from {opacity:0; transform: translateY(12px) scale(0.9)} to{opacity:1; transform:translateY(0) scale(1)}}
+  .hero .content{flex:1}
+  .hero h2{margin:0 0 8px 0; color:var(--blue)}
+  .hero p{margin:0 0 14px 0; color:var(--muted)}
+  .grid-cats{display:flex; gap:12px; flex-wrap:wrap}
+  .cat{background:var(--card-bg); padding:12px 16px; border-radius:10px; min-width:160px; box-shadow:0 4px 12px rgba(11,79,140,0.07); cursor:pointer; transition:transform .12s ease, box-shadow .12s ease; display:flex; align-items:center; gap:12px}
+  .cat:hover{transform:translateY(-6px); box-shadow:0 8px 26px rgba(11,79,140,0.12)}
+  .cat .icon{width:40px; height:40px; border-radius:8px; background:var(--light-blue); display:flex; align-items:center; justify-content:center; color:var(--accent); font-weight:700}
+  .cat .txt{font-weight:600}
+  /* search */
+  .search-row{display:flex; gap:10px; margin:18px 0; align-items:center}
+  .search-row input{flex:1; padding:10px 12px; border-radius:10px; border:1px solid #d6e6fb; font-size:16px}
+  .search-row button{background:var(--accent); color:#fff; border:none; padding:10px 14px; border-radius:10px; cursor:pointer}
+  /* sheet area */
+  .sheet-area{margin-top:12px}
+  .sheet-header{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:8px}
+  .sheet-title{font-size:18px; font-weight:700; color:var(--blue)}
+  .back-btn{background:#fff; border:1px solid #ddd; padding:8px 12px; border-radius:8px; cursor:pointer}
+  .card{background:var(--card-bg); padding:12px; border-radius:10px; box-shadow:0 6px 18px rgba(13,46,78,0.04); margin-bottom:12px}
+  table{width:100%; border-collapse:collapse; direction:rtl}
+  th,td{border:1px solid #e6eef8; padding:10px; text-align:right; vertical-align:top}
+  th{background:#f4fbff; color:var(--blue); font-weight:700}
+  .muted{color:var(--muted); font-size:13px}
+  .footer{margin-top:24px; text-align:center; color:var(--muted); padding:18px 0; font-size:14px}
+  .hidden{display:none}
+  /* responsive */
+  @media (max-width:760px){
+    .hero{flex-direction:column; align-items:flex-end}
+    .hero .logo-wrap{order:2}
+    .cat{min-width:140px}
+    header h1{font-size:16px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="left">
+    <img class="logo" src="https://i.postimg.cc/kDK1cdcC/logo.png" alt="לוגו">
+    <div>
+      <h1>מרכז ההדרכות</h1>
+      <div class="muted">קל, מהיר, מעודכן מתוך Google Sheets</div>
+    </div>
+  </div>
+  <div>
+    <!-- ניתן להוסיף כפתורי משתמש/הגדרות בעתיד -->
+  </div>
+</header>
+
+<div class="main">
+
+  <!-- דף הבית -->
+  <div id="homePage">
+    <div class="hero">
+      <div class="logo-wrap">
+        <img src="https://i.postimg.cc/kDK1cdcC/logo.png" alt="לוגו">
+      </div>
+      <div class="content">
+        <h2>מרכז ההדרכות הפנימי</h2>
+        <p>כל ההנחיות, הקישורים והטלפונים במקום אחד — מתעדכן אוטומטית מהגיליון ששלחת.</p>
+
+        <div class="grid-cats" id="homeCats">
+          <!-- קטגוריות יתמלאו דינמית -->
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px" class="card">
+      <div class="muted">חיפוש מהיר בכל האתר</div>
+      <div class="search-row">
+        <input id="globalSearch" placeholder="חפש כאן — כל ההדרכות, קישורים וטלפונים..." />
+        <button id="clearSearch">נקה</button>
+      </div>
+      <div id="searchResults" class="hidden card"></div>
+    </div>
+  </div>
+
+  <!-- אזור הצגת גיליון -->
+  <div id="sheetPage" class="hidden">
+    <div class="sheet-area">
+      <div class="sheet-header">
+        <div>
+          <button class="back-btn" id="backHome">← חזור</button>
+        </div>
+        <div class="sheet-title" id="sheetTitle"></div>
+      </div>
+
+      <div id="sheetContent"></div>
+    </div>
+  </div>
+
+  <div class="footer">האתר בהרצה | נבנה על ידי מ.ל.</div>
+</div>
+
+<script>
+/* ----------------- הגדרות ----------------- */
+const API_URL = "https://script.google.com/macros/s/AKfycbzjmufh1nxbVZbpO3hVZSWWPHV3CLnOWjWVYJftLrwPFPKlcuwNA8aBc0k0jAIq2IMx3w/exec";
+let sheetsData = null; // יאוחסן כאן לאחר טעינה
+
+/* ----------------- עזרי תצוגה ----------------- */
+// מזהה אם שורה היא array או object
+function isArrayOfArrays(x){
+  return Array.isArray(x) && x.length>0 && Array.isArray(x[0]);
+}
+function buildTableFromArrays(arr){
+  // arr: [ [header...], [row...], ... ]
+  if(!arr || !arr.length) return "<div class='card muted'>אין נתונים</div>";
+  const headers = arr[0];
+  let html = "<div class='card'><table><thead><tr>";
+  headers.forEach(h => html += `<th>${h||""}</th>`);
+  html += "</tr></thead><tbody>";
+  arr.slice(1).forEach(row => {
+    html += "<tr>";
+    row.forEach(cell => html += `<td>${formatCell(cell)}</td>`);
+    html += "</tr>";
+  });
+  html += "</tbody></table></div>";
+  return html;
+}
+function buildTableFromObjects(arr){
+  // arr: [ {col:val, ...}, ... ]
+  if(!arr || !arr.length) return "<div class='card muted'>אין נתונים</div>";
+  const headers = Object.keys(arr[0]);
+  let html = "<div class='card'><table><thead><tr>";
+  headers.forEach(h => html += `<th>${h||""}</th>`);
+  html += "</tr></thead><tbody>";
+  arr.forEach(row => {
+    html += "<tr>";
+    headers.forEach(h => html += `<td>${formatCell(row[h])}</td>`);
+    html += "</tr>";
+  });
+  html += "</tbody></table></div>";
+  return html;
+}
+function formatCell(cell){
+  if(cell === null || cell === undefined) return "";
+  const s = String(cell).trim();
+  // תמונה?
+  if(s.match(/\.(jpg|jpeg|png|gif|bmp|webp)(\?.*)?$/i) || s.startsWith("https://i.postimg.cc") || s.startsWith("https://imgur.com")){
+    return `<img src="${s}" style="max-width:220px; display:block; margin:6px 0; border-radius:6px" alt="תמונה">`;
+  }
+  // YouTube link?
+  if(s.includes("youtube.com/watch") || s.includes("youtu.be/")) {
+    // נחלץ id
+    let id = null;
+    const m = s.match(/[?&]v=([^&]+)/);
+    if(m) id = m[1];
+    else {
+      const m2 = s.match(/youtu\.be\/([^?&]+)/);
+      if(m2) id = m2[1];
+    }
+    if(id) return `<div style="margin:8px 0"><iframe width="100%" height="315" src="https://www.youtube.com/embed/${id}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+  }
+  // mailto?
+  if(s.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) return `<a href="mailto:${s}">${s}</a>`;
+  // phone?
+  if(s.match(/^[0-9+\-\s()]{6,}$/)) {
+    const tel = s.replace(/\s+/g,'');
+    return `<a href="tel:${tel}">${s}</a>`;
+  }
+  // otherwise text
+  return s.replace(/\n/g,"<br>");
+}
+
+/* ----------------- טעינת נתונים ----------------- */
+async function loadSheets(){
+  try {
+    document.getElementById("searchResults").classList.add("hidden");
+    const r = await fetch(API_URL);
+    const json = await r.json();
+    sheetsData = json;
+    buildHome();
+  } catch(err){
+    console.error("שגיאה בטעינת השיטס:", err);
+    document.getElementById("homeCats").innerHTML = `<div class="card muted">שגיאה בטעינת הנתונים. בדוק את ה־Apps Script / הרשאות שיתוף.</div>`;
+  }
+}
+
+/* ----------------- דף בית ----------------- */
+function buildHome(){
+  const cats = document.getElementById("homeCats");
+  cats.innerHTML = "";
+  const names = Object.keys(sheetsData || {});
+  if(!names.length){
+    cats.innerHTML = `<div class="card muted">אין גיליונות להצגה</div>`;
+    return;
+  }
+  names.forEach(name => {
+    const div = document.createElement("div");
+    div.className = "cat";
+    div.innerHTML = `<div class="icon">${name.charAt(0) || ''}</div><div class="txt">${name}</div>`;
+    div.onclick = ()=> showSheet(name);
+    cats.appendChild(div);
+  });
+}
+
+/* ----------------- הצגת גיליון כעמוד פנימי ----------------- */
+function showSheet(name){
+  document.getElementById("homePage").classList.add("hidden");
+  const sp = document.getElementById("sheetPage");
+  sp.classList.remove("hidden");
+  document.getElementById("sheetTitle").textContent = name;
+  const content = document.getElementById("sheetContent");
+  const raw = sheetsData[name];
+  // תמיכה בשני מבנים: מערך של מערכים (headers,row,...) או מערך של אובייקטים
+  let html = "";
+  if(isArrayOfArrays(raw)){
+    html = buildTableFromArrays(raw);
+  } else if(Array.isArray(raw) && raw.length && typeof raw[0] === "object"){
+    html = buildTableFromObjects(raw);
+  } else {
+    html = "<div class='card muted'>לא ידוע פורמט הנתונים לגיליון זה או שאין נתונים</div>";
+  }
+  content.innerHTML = html;
+  // גלול לראש
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+/* ----------------- חזרה לדף הבית ----------------- */
+document.getElementById("backHome").addEventListener("click", ()=> {
+  document.getElementById("sheetPage").classList.add("hidden");
+  document.getElementById("homePage").classList.remove("hidden");
+  document.getElementById("sheetContent").innerHTML = "";
+});
+
+/* ----------------- חיפוש גלובלי (מחפש בכל השדות של כל הגיליונות) ----------------- */
+document.getElementById("globalSearch").addEventListener("input", (e)=>{
+  const q = String(e.target.value || "").trim().toLowerCase();
+  if(!q){
+    document.getElementById("searchResults").classList.add("hidden");
+    return;
+  }
+  const results = [];
+  Object.keys(sheetsData || {}).forEach(sheetName => {
+    const rows = sheetsData[sheetName];
+    if(!rows) return;
+    // normalized text per row
+    if(isArrayOfArrays(rows)){
+      const headers = rows[0] || [];
+      rows.slice(1).forEach((r, idx) => {
+        const txt = r.map(c => String(c||"")).join(" ").toLowerCase();
+        if(txt.includes(q)) results.push({sheetName, rowIndex: idx+1, headers, row: r});
+      });
+    } else { // array of objects
+      rows.forEach((obj, idx) => {
+        const txt = Object.values(obj).map(v=>String(v||"")).join(" ").toLowerCase();
+        if(txt.includes(q)) results.push({sheetName, rowIndex: idx, rowObj: obj});
+      });
+    }
+  });
+
+  // הצגת תוצאות
+  const resDiv = document.getElementById("searchResults");
+  if(!results.length){
+    resDiv.innerHTML = "<div class='muted'>לא נמצאו תוצאות</div>";
+  } else {
+    let html = `<div style="font-weight:700; margin-bottom:8px">נמצאו ${results.length} תוצאות:</div>`;
+    results.forEach(r => {
+      html += `<div style="border-bottom:1px solid #eee; padding:8px 0">`;
+      html += `<div style="font-weight:700; color:var(--blue)">${r.sheetName}</div>`;
+      if(r.row){
+        if(isArrayOfArrays(sheetsData[r.sheetName])){
+          // headers + row array
+          r.headers.forEach((h,i)=> html += `<div><strong>${h}:</strong> ${formatCell(r.row[i])}</div>`);
+        } else {
+          // shouldn't happen here
+        }
+      } else if(r.rowObj){
+        Object.entries(r.rowObj).forEach(([k,v]) => html += `<div><strong>${k}:</strong> ${formatCell(v)}</div>`);
+      }
+      html += `<div style="margin-top:6px"><button onclick='openSheetFromSearch("${r.sheetName}", ${r.rowIndex||0})' class="back-btn">צפה בגיליון</button></div>`;
+      html += `</div>`;
+    });
+    resDiv.innerHTML = html;
+  }
+  resDiv.classList.remove("hidden");
+});
+
+function openSheetFromSearch(sheetName, rowIdx){
+  showSheet(sheetName);
+  // גלילה למיקום אפשרית: אם מוצג כטבלה - נוכל להתמקד בשורה (future improvement)
+}
+
+/* ----------------- כפתור נקה */ 
+document.getElementById("clearSearch").addEventListener("click", ()=>{
+  document.getElementById("globalSearch").value = "";
+  document.getElementById("searchResults").classList.add("hidden");
+});
+
+/* ----------------- התחלה ----------------- */
+loadSheets();
+</script>
+
+</body>
+</html>
